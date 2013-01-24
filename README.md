@@ -25,7 +25,7 @@ There are 3 types of rules:
 Quick Start
 -----------
 
-- Download the latest release from the NuGet repository (or compiled from the source, here)
+- Download the latest release from the NuGet repository http://nuget.org/packages/domainname-parser/ (or compiled from the source, here)
 - Download the latest rules file: http://publicsuffix.org/list/
 - Configure your app.config in the to point to the rules file you just downloaded (see the sample app.config included in the .zip) 
 - Look at the included unit tests to see how easy the component is to use 

@@ -25,10 +25,10 @@ There are 3 types of rules:
 Quick Start
 -----------
 
-- Download the latest release from the NuGet repository http://nuget.org/packages/domainname-parser/ (or compiled from the source, here)
-- Download the latest rules file: http://publicsuffix.org/list/
-- Configure your app.config in the to point to the rules file you just downloaded (see the sample app.config included in the .zip) 
-- Look at the included unit tests to see how easy the component is to use 
+1. Download the latest release from the NuGet repository http://nuget.org/packages/domainname-parser/ (or compiled from the source, here)
+2. Download the latest rules file: http://publicsuffix.org/list/
+3. Configure your app.config in the to point to the rules file you just downloaded (see the sample app.config included in the .zip) 
+4. Look at the included unit tests to see how easy the component is to use 
 
 Usage
 -----------
@@ -57,4 +57,4 @@ Using the component is simple. Just use the constructor or the static 'TryParse'
 
 Where can I get the latest rules list?
 -----------
-You can download the latest rules from the Public Suffix site.
+You can download the latest rules from the Public Suffix site: http://publicsuffix.org/list/ 

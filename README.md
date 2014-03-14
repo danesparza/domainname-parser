@@ -7,11 +7,11 @@ Overview
 -----------
 A domain name has 3 major parts:
 
-- The 'top level' domain, or TLD (like .com, .net, .info) 
-- The 'domain name', or SLD (like google, microsoft, ebay) 
-- The subdomain (like www, photos)
+- The 'top level' domain, or TLD (like `.com`, `.net`, `.info`) 
+- The 'domain name', or SLD (like `google`, `microsoft`, `ebay`) 
+- The subdomain (like `www`, `photos`)
 
-Parsing a domain name into it's 3 major parts sounds easy, but is no trivial task. What happens when you come across hosts like test.co.uk? What about hosts like www.parliament.uk?
+Parsing a domain name into it's 3 major parts sounds easy, but is no trivial task. What happens when you come across hosts like `test.co.uk`? What about hosts like `www.parliament.uk`?
 
 From http://publicsuffix.org :
 
@@ -33,7 +33,7 @@ Quick Start
 Usage
 -----------
 
-Using the component is simple. Just use the constructor or the static 'TryParse' method and pass in the complete host name string. The component will return the parsed domain in a DomainName component. It's as simple as that:
+Using the component is simple. Just use the constructor or the static `TryParse` method and pass in the complete host name string. The component will return the parsed domain in a DomainName component. It's as simple as that:
 
     // Try parsing a 'wildcard' domain 
     if (DomainName.TryParse("photos.verybritish.co.uk", out outDomain)) 

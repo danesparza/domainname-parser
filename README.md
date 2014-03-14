@@ -15,7 +15,7 @@ Parsing a domain name into it's 3 major parts sounds easy, but is no trivial tas
 
 From http://publicsuffix.org :
 
-"Since there is no algorithmic method of finding the highest level at which a domain may be registered for a particular top-level domain (the policies differ with each registry), the only method is to create a list. This is the aim of the Public Suffix List."
+> "Since there is no algorithmic method of finding the highest level at which a domain may be registered for a particular top-level domain (the policies differ with each registry), the only method is to create a list. This is the aim of the Public Suffix List."
 
 The domain name parsing component uses the list of rules at www.publicsuffix.org to parse a domain name into 3 component parts. 
 

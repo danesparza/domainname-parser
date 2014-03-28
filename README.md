@@ -35,25 +35,27 @@ Usage
 
 Using the component is simple. Just use the constructor or the static `TryParse` method and pass in the complete host name string. The component will return the parsed domain in a DomainName component. It's as simple as that:
 
-    // Try parsing a 'wildcard' domain 
-    if (DomainName.TryParse("photos.verybritish.co.uk", out outDomain)) 
-    { 
-      // The domain should be parsed as 'verybritish' 
-      Assert.AreEqual("verybritish", outDomain.Domain);
-      
-      // The TLD is 'co.uk' 
-      Assert.AreEqual("co.uk", outDomain.TLD);
-      
-      // The SLD is just an alias for 'Domain': 
-      Assert.AreEqual(outDomain.Domain, outDomain.SLD);
-      
-      // The subdomain is everything else to the left of the domain: 
-      Assert.AreEqual("photos", outDomain.SubDomain); 
-    } 
-    else 
-    { 
-      Debug.WriteLine("Apparently, we couldn't parse photos.verybritish.co.uk"); 
-    }
+```CSharp
+// Try parsing a 'wildcard' domain 
+if (DomainName.TryParse("photos.verybritish.co.uk", out outDomain)) 
+{ 
+  // The domain should be parsed as 'verybritish' 
+  Assert.AreEqual("verybritish", outDomain.Domain);
+  
+  // The TLD is 'co.uk' 
+  Assert.AreEqual("co.uk", outDomain.TLD);
+  
+  // The SLD is just an alias for 'Domain': 
+  Assert.AreEqual(outDomain.Domain, outDomain.SLD);
+  
+  // The subdomain is everything else to the left of the domain: 
+  Assert.AreEqual("photos", outDomain.SubDomain); 
+} 
+else 
+{ 
+  Debug.WriteLine("Apparently, we couldn't parse photos.verybritish.co.uk"); 
+}
+```
 
 Where can I get the latest rules list?
 -----------

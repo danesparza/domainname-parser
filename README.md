@@ -3,6 +3,8 @@ domainname-parser
 
 .NET domain name parsing library (uses http://publicsuffix.org rules)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/4i17cgkp978fh6b1)](https://ci.appveyor.com/project/danesparza/domainname-parser)
+
 Overview
 -----------
 A domain name has 3 major parts:
@@ -25,12 +27,15 @@ There are 3 types of rules:
 Quick Start
 -----------
 
-1. Download the latest release from the NuGet repository http://nuget.org/packages/domainname-parser/ (or compiled from the source, here)
-2. Download the latest rules file: http://publicsuffix.org/list/
-3. Configure your app.config in the to point to the rules file you just downloaded (see the sample app.config included in the .zip) 
-4. Look at the included unit tests to see how easy the component is to use 
+Download the latest release from the [NuGet repository](http://nuget.org/packages/domainname-parser)
 
-Usage
+```powershell
+Install-Package domainname-parser
+```
+
+Download the latest rules file from [https://publicsuffix.org/list/](https://publicsuffix.org/list/) and configure your app.config in the to point to the rules file you just downloaded (see the sample app.config included in the .zip)
+
+Example
 -----------
 
 Using the component is simple. Just use the constructor or the static `TryParse` method and pass in the complete host name string. The component will return the parsed domain in a DomainName component. It's as simple as that:

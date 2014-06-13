@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>domainname-parser</id>
+        <version>$version$</version>
+        <title>Domain parser library</title>
+        <authors>Dan Esparza</authors>
+        <owners>Dan Esparza</owners>
+        <projectUrl>https://github.com/danesparza/domainname-parser</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>.NET domain name parsing library (uses publicsuffix.org)</description>
+        <releaseNotes>For updated release notes, please see the project page</releaseNotes>
+        <copyright>Copyright (c) 2013</copyright>
+        <tags>domain parser url parse publicsuffix domainname</tags>
+    </metadata>
+    <files>
+        <file src="app.config" target="content\net35\app.config" />
+        <file src="bin\Release\DomainName.Library.dll" target="lib\net35\DomainName.Library.dll" />
+    </files>
+</package>

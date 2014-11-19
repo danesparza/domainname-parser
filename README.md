@@ -5,8 +5,8 @@ domainname-parser
 
 [![Build status](https://ci.appveyor.com/api/projects/status/4i17cgkp978fh6b1)](https://ci.appveyor.com/project/danesparza/domainname-parser)
 
-Overview
------------
+### Overview
+
 A domain name has 3 major parts:
 
 - The 'top level' domain, or TLD (like `.com`, `.net`, `.info`) 
@@ -24,8 +24,7 @@ The domain name parsing component uses the list of rules at www.publicsuffix.org
 There are 3 types of rules: 
 'Normal' domain rules, 'Wildcard' rules, and 'Exception' rules.
 
-Quick Start
------------
+### Quick Start
 
 Download the latest release from the [NuGet repository](http://nuget.org/packages/domainname-parser)
 
@@ -35,8 +34,7 @@ Install-Package domainname-parser
 
 Download the latest rules file from [https://publicsuffix.org/list/](https://publicsuffix.org/list/) and configure your app.config in the to point to the rules file you just downloaded (see the sample app.config included in the .zip)
 
-Example
------------
+### Example
 
 Using the component is simple. Just use the constructor or the static `TryParse` method and pass in the complete host name string. The component will return the parsed domain in a DomainName component. It's as simple as that:
 
@@ -62,6 +60,6 @@ else
 }
 ```
 
-Where can I get the latest rules list?
------------
+### Where can I get the latest rules list? 
+
 You can download the latest rules from the Public Suffix site: http://publicsuffix.org/list/ 

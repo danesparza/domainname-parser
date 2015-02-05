@@ -16,9 +16,6 @@
             <dependency id="Microsoft.Net.Http" version="2.2.18"/>
         </dependencies>
     </metadata>
-    <dependencies>
-        <dependency id="Microsoft.Net.Http" version="2.2.18"/>
-    </dependencies>
     <files>
         <file src="app.config" target="content\net40\app.config" />
         <file src="bin\Release\DomainName.Library.dll" target="lib\net40\DomainName.Library.dll" />

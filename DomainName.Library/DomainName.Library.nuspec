@@ -13,8 +13,11 @@
         <copyright>Copyright (c) 2013</copyright>
         <tags>domain parser url parse publicsuffix domainname</tags>
     </metadata>
+    <dependencies>
+        <dependency id="Microsoft.Net.Http" version="2.2.18"/>
+    </dependencies>
     <files>
-        <file src="app.config" target="content\net35\app.config" />
-        <file src="bin\Release\DomainName.Library.dll" target="lib\net35\DomainName.Library.dll" />
+        <file src="app.config" target="content\net40\app.config" />
+        <file src="bin\Release\DomainName.Library.dll" target="lib\net40\DomainName.Library.dll" />
     </files>
 </package>

@@ -94,7 +94,7 @@ namespace DomainName.Library
             }
 
             //  Return our results:
-            Debug.WriteLine(string.Format("Loaded {0} rules into cache.", results.Count));
+            Debug.WriteLine(string.Format("Loaded {0} rules into cache.", results.Values.Sum(r => r.Values.Count)));
             return results;
         }
 

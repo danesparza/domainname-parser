@@ -265,8 +265,8 @@ namespace DomainName.Library
                     if (TLDRulesCache.Instance.TLDRuleLists[rule].TryGetValue(checkAgainst, out result))
                     {
                         ruleMatches.Add(result);
-                        Debug.WriteLine(string.Format("Domain part {0} matched {1} rule", checkAgainst, rule));
                     }
+                    Debug.WriteLine(string.Format("Domain part {0} matched {1} {2} rules", checkAgainst, result == null ? 0 : 1, rule));
                 }
             }
 

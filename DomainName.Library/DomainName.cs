@@ -142,13 +142,13 @@ namespace DomainName.Library
             switch (MatchingRule.Type)
             {
                 case TLDRule.RuleType.Normal:
-                    tldIndex = domainString.IndexOf("." + MatchingRule.Name, StringComparison.InvariantCultureIgnoreCase);
+                    tldIndex = domainString.LastIndexOf("." + MatchingRule.Name, StringComparison.InvariantCultureIgnoreCase);
                     tempSudomainAndDomain = domainString.Substring(0, tldIndex);
                     TLD = domainString.Substring(tldIndex + 1);
                     break;
                 case TLDRule.RuleType.Wildcard:
                     //  This finds the last portion of the TLD...
-                    tldIndex = domainString.IndexOf("." + MatchingRule.Name, StringComparison.InvariantCultureIgnoreCase);
+                    tldIndex = domainString.LastIndexOf("." + MatchingRule.Name, StringComparison.InvariantCultureIgnoreCase);
                     tempSudomainAndDomain = domainString.Substring(0, tldIndex);
 
                     //  But we need to find the wildcard portion of it:

@@ -65,10 +65,15 @@ namespace DomainName.Tests
             //  We should have more than 0 rules loaded.  If we don't, it's probably because
             //  we need to get the rules cache from http://publicsuffix.org/list/ and haven't yet
             //  or the component needs to be configured to look in the correct spot.
-            Assert.IsTrue(TLDRulesCache.Instance.TLDRuleList.Count > 0);
+            Assert.IsTrue(TLDRulesCache.Instance.TLDRuleLists.Count > 0);
+            Assert.IsTrue(TLDRulesCache.Instance.TLDRuleLists.Values.All(list => list.Count > 0));
 
             Debug.WriteLine(
-                string.Format("There are {0} rules loaded from the cache.", TLDRulesCache.Instance.TLDRuleList.Count)
+                string.Format("There are {0} rule lists loaded from the cache.", TLDRulesCache.Instance.TLDRuleLists.Count)
+                );
+
+            Debug.WriteLine(
+                string.Format("There are {0} rules loaded from the cache.", TLDRulesCache.Instance.TLDRuleLists.Values.Select(list => list.Count).Sum())
                 );
         }
     }

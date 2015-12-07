@@ -14,13 +14,13 @@ namespace DomainName.Library
         private static volatile TLDRulesCache _uniqueInstance;
         private static object _syncObj = new object();
         private static object _syncList = new object();
-        private List<TLDRule> _lstTLDRules;
+
+        private IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> _lstTLDRules;
 
         private TLDRulesCache()
         {
             //  Initialize our internal list:
             _lstTLDRules = GetTLDRules();
-            _lstTLDRules.Sort();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace DomainName.Library
         /// <summary>
         /// List of TLD rules
         /// </summary>
-        public List<TLDRule> TLDRuleList
+        public IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> TLDRuleLists
         {
             get
             {
@@ -73,27 +73,28 @@ namespace DomainName.Library
         /// Gets the list of TLD rules from the cache
         /// </summary>
         /// <returns></returns>
-        private List<TLDRule> GetTLDRules()
+        private IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> GetTLDRules()
         {
-            List<TLDRule> results = new List<TLDRule>();
+            var results = new Dictionary<TLDRule.RuleType, IDictionary<string, TLDRule>>();
+            var rules = Enum.GetValues(typeof(TLDRule.RuleType)).Cast<TLDRule.RuleType>();
+            foreach (var rule in rules)
+            {
+                results[rule] = new Dictionary<string, TLDRule>(StringComparer.InvariantCultureIgnoreCase);
+            }
 
             var ruleStrings = ReadRulesData();           
 
             //  Strip out any lines that are:
             //  a.) A comment
             //  b.) Blank
-            IEnumerable<TLDRule> lstTLDRules = from ruleString in ruleStrings
-                                               where
-                                               !ruleString.StartsWith("//", StringComparison.InvariantCultureIgnoreCase)
-                                               &&
-                                               !(ruleString.Trim().Length == 0)
-                                               select new TLDRule(ruleString);
-
-            //  Transfer this list to the results:
-            results = lstTLDRules.ToList();
+            foreach (var ruleString in ruleStrings.Where(ruleString => !ruleString.StartsWith("//", StringComparison.InvariantCultureIgnoreCase) && ruleString.Trim().Length != 0))
+            {
+                var result = new TLDRule(ruleString);
+                results[result.Type][result.Name] = result;
+            }
 
             //  Return our results:
-            Debug.WriteLine(string.Format("Loaded {0} rules into cache.", results.Count));
+            Debug.WriteLine(string.Format("Loaded {0} rules into cache.", results.Values.Sum(r => r.Values.Count)));
             return results;
         }
 

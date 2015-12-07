@@ -257,56 +257,17 @@ namespace DomainName.Library
                 if (checkAgainst.EndsWith("."))
                     checkAgainst = checkAgainst.Substring(0, checkAgainst.Length - 1);
 
-                //  Try to match an exception rule:
-                var exceptionresults = from test in TLDRulesCache.Instance.TLDRuleList
-                                       where
-                                         test.Name.Equals(checkAgainst, StringComparison.InvariantCultureIgnoreCase)
-                                         &&
-                                         test.Type == TLDRule.RuleType.Exception
-                                       select
-                                         test;
-
-                //  Add our matches:
-                ruleMatches.AddRange(exceptionresults.ToList());
-
-                //  See if we have a match yet.
-                Debug.WriteLine(
-                    string.Format("Domain part {0} matched {1} exception rules", checkAgainst, exceptionresults.Count())
-                    );
-
-                //  Try to match an exception rule:
-                var wildcardresults = from test in TLDRulesCache.Instance.TLDRuleList
-                                      where
-                                        test.Name.Equals(checkAgainst, StringComparison.InvariantCultureIgnoreCase)
-                                        &&
-                                        test.Type == TLDRule.RuleType.Wildcard
-                                      select
-                                        test;
-
-                //  Add our matches:
-                ruleMatches.AddRange(wildcardresults.ToList());
-
-                //  See if we have a match yet.
-                Debug.WriteLine(
-                    string.Format("Domain part {0} matched {1} wildcard rules", checkAgainst, wildcardresults.Count())
-                    );
-
-                //  Try to match a normal rule:
-                var normalresults = from test in TLDRulesCache.Instance.TLDRuleList
-                                    where
-                                      test.Name.Equals(checkAgainst, StringComparison.InvariantCultureIgnoreCase)
-                                      &&
-                                      test.Type == TLDRule.RuleType.Normal
-                                    select
-                                      test;
-
-                //  See if we have a match yet.
-                Debug.WriteLine(
-                    string.Format("Domain part {0} matched {1} normal rules", checkAgainst, normalresults.Count())
-                    );
-
-                //  Add our matches:
-                ruleMatches.AddRange(normalresults.ToList());
+                var rules = Enum.GetValues(typeof(TLDRule.RuleType)).Cast<TLDRule.RuleType>();
+                foreach (var rule in rules)
+                {
+                    //  Try to match rule:
+                    TLDRule result;
+                    if (TLDRulesCache.Instance.TLDRuleLists[rule].TryGetValue(checkAgainst, out result))
+                    {
+                        ruleMatches.Add(result);
+                        Debug.WriteLine(string.Format("Domain part {0} matched {1} rule", checkAgainst, rule));
+                    }
+                }
             }
 
             //  Sort our matches list (longest rule wins, according to :

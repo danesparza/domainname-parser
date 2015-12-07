@@ -113,6 +113,47 @@ namespace DomainName.Tests
                 string.Format("Looks like the parsed domain part is: {0}", outDomain.Domain)
                 );
         }
+        
+        [TestMethod]
+        public void ParseNormalDomainWhereTLDOccursInDomain()
+        {
+            //  Try parsing a 'normal' domain where the TLD part also occurs in the domain part
+            DomainName.Library.DomainName.TryParse("russian.cntv.cn", out outDomain);
 
+            //  The domain should be parsed as 'cntv'
+            Assert.AreEqual<string>("cntv", outDomain.Domain);
+
+            Debug.WriteLine(
+                string.Format("Looks like the parsed domain part is: {0}", outDomain.Domain)
+                );
+        }
+
+        [TestMethod]
+        public void ParseWildcardDomainWhereTLDOccursInDomain()
+        {
+            //  Try parsing a 'wildcard' domain where the TLD part also occurs in the domain part
+            DomainName.Library.DomainName.TryParse("com.er.com.er", out outDomain);
+
+            //  The domain should be parsed as 'er'
+            Assert.AreEqual<string>("er", outDomain.Domain);
+
+            Debug.WriteLine(
+                string.Format("Looks like the parsed domain part is: {0}", outDomain.Domain)
+                );
+        }
+
+        [TestMethod]
+        public void ParseExceptionDomainWhereTLDOccursInSubdomain()
+        {
+            //  Try parsing an 'exception' domain where the TLD part also occurs in the subdomain part
+            DomainName.Library.DomainName.TryParse("www.ck.www.ck", out outDomain);
+
+            //  The domain should be parsed as 'www'
+            Assert.AreEqual<string>("www", outDomain.Domain);
+
+            Debug.WriteLine(
+                string.Format("Looks like the parsed domain part is: {0}", outDomain.Domain)
+                );
+        }
     }
 }

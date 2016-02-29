@@ -1,4 +1,4 @@
-domainname-parser [![Build status](https://ci.appveyor.com/api/projects/status/4i17cgkp978fh6b1)](https://ci.appveyor.com/project/danesparza/domainname-parser)
+domainname-parser [![Build status](https://ci.appveyor.com/api/projects/status/4i17cgkp978fh6b1?svg=true)](https://ci.appveyor.com/project/danesparza/domainname-parser)
 =================
 
 .NET domain name parsing library (uses http://publicsuffix.org rules)

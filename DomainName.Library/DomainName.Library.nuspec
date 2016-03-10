@@ -7,6 +7,7 @@
         <authors>Dan Esparza</authors>
         <owners>Dan Esparza</owners>
         <projectUrl>https://github.com/danesparza/domainname-parser</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/danesparza/domainname-parser/master/Internet1.jpg</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>.NET domain name parsing library (uses publicsuffix.org)</description>
         <releaseNotes>For updated release notes, please see the project page</releaseNotes>

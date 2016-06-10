@@ -30,7 +30,7 @@ Download the latest release from the [NuGet repository](http://nuget.org/package
 Install-Package domainname-parser
 ```
 
-Download the latest rules file from [https://publicsuffix.org/list/](https://publicsuffix.org/list/) and configure your app.config in the to point to the rules file you just downloaded (see the sample app.config included in the .zip)
+Download the latest rules file from [https://publicsuffix.org/list/](https://publicsuffix.org/list/) and configure your `app.config` to point to the rules file you just downloaded (see the [sample app.config](https://github.com/danesparza/domainname-parser/blob/master/DomainName.Library/app.config#L10-L13))
 
 ### Example
 

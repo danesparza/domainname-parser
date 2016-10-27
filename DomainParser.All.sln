@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C99DFDEB-85B5-45A6-AA22-1A8CBF6D7A15}"
+	ProjectSection(SolutionItems) = preProject
+		DomainName.All.vsmdi = DomainName.All.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainParser.Library", "DomainParser.Library\DomainParser.Library.csproj", "{30F13E9B-61E5-4A67-BE8B-659660B76C31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainParser.Tests", "DomainParser.Tests\DomainParser.Tests.csproj", "{19E3EC6D-B245-4005-AB2E-5C88E8738CC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30F13E9B-61E5-4A67-BE8B-659660B76C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30F13E9B-61E5-4A67-BE8B-659660B76C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30F13E9B-61E5-4A67-BE8B-659660B76C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30F13E9B-61E5-4A67-BE8B-659660B76C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19E3EC6D-B245-4005-AB2E-5C88E8738CC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19E3EC6D-B245-4005-AB2E-5C88E8738CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19E3EC6D-B245-4005-AB2E-5C88E8738CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19E3EC6D-B245-4005-AB2E-5C88E8738CC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = DomainName.All.vsmdi
+	EndGlobalSection
+EndGlobal

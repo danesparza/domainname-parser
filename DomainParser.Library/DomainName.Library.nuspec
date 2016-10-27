@@ -19,6 +19,6 @@
     </metadata>
     <files>
         <file src="app.config" target="content\net40\app.config" />
-        <file src="bin\Release\DomainName.Library.dll" target="lib\net40\DomainName.Library.dll" />
+        <file src="bin\Release\DomainParser.Library.dll" target="lib\net40\DomainParser.Library.dll" />
     </files>
 </package>

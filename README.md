@@ -7,9 +7,9 @@ domainname-parser [![Build status](https://ci.appveyor.com/api/projects/status/4
 
 A domain name has 3 major parts:
 
-- The 'top level' domain, or TLD (like `.com`, `.net`, `.info`) 
-- The 'domain name', or SLD (like `google`, `microsoft`, `ebay`) 
-- The subdomain (like `www`, `photos`)
+- The **top level domain**, or TLD (like `.com`, `.net`, `.info`) 
+- The **domain name**, or SLD (like `google`, `microsoft`, `ebay`) 
+- The **subdomain** (like `www`, `photos`)
 
 Parsing a domain name into it's 3 major parts sounds easy, but is no trivial task. What happens when you come across hosts like `test.co.uk`? What about hosts like `www.parliament.uk`?
 

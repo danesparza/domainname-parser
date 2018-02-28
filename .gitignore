@@ -37,6 +37,9 @@ x64/
 *.vssscc
 .builds
 
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
 # Visual C++ cache files
 ipch/
 *.aps

@@ -14,6 +14,7 @@ namespace DomainParser.Library
         private static volatile TLDRulesCache _uniqueInstance;
         private static object _syncObj = new object();
         private static object _syncList = new object();
+		private static object _syncData = new object();
 
         private IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> _lstTLDRules;
 
@@ -100,23 +101,68 @@ namespace DomainParser.Library
 
         private IEnumerable<string> ReadRulesData()
         {
-            if (File.Exists(Settings.Default.SuffixRulesFileLocation))
-            {
+            if (!string.IsNullOrEmpty(Settings.Default.SuffixRulesFileLocation)) {
+
+				if (File.Exists(Settings.Default.SuffixRulesFileLocation)) {
+
+					DateTime expireDate = File.GetLastWriteTime(Settings.Default.SuffixRulesFileLocation).AddDays(Settings.Default.SuffixRulesFileExpireDays);
+					if (expireDate < DateTime.Now) {
+
+						lock (_syncData) {
+
+							// We have to check again. The file might have been rotated by another process.
+							expireDate = File.GetLastWriteTime(Settings.Default.SuffixRulesFileLocation).AddDays(Settings.Default.SuffixRulesFileExpireDays);
+							if (expireDate < DateTime.Now) {
+
+								GetAndSaveRulesData();
+
+							}
+
+						}
+
+					}
+
+				} else {
+
+					lock (_syncData) {
+
+						if (!File.Exists(Settings.Default.SuffixRulesFileLocation)) {
+
+							GetAndSaveRulesData();
+
+						}
+
+					}
+
+				}
+
                 //  Load the rules from the cached text file
                 foreach (var line in File.ReadAllLines(Settings.Default.SuffixRulesFileLocation, Encoding.UTF8))
                     yield return line;
             }
             else
             {
-                // read the files from the web directly.
-                var datFile = new HttpClient().GetStreamAsync("https://publicsuffix.org/list/effective_tld_names.dat").Result;
-                using (var reader = new StreamReader(datFile))
-                {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                        yield return line;
-                }
+				// read the files from the web directly.
+				using (var datFile = new HttpClient().GetStreamAsync("https://publicsuffix.org/list/effective_tld_names.dat").Result)
+				using (var reader = new StreamReader(datFile)) {
+					string line;
+					while ((line = reader.ReadLine()) != null)
+						yield return line;
+				}
             }
         }
+
+		private void GetAndSaveRulesData() {
+
+			try {
+				File.Delete(Settings.Default.SuffixRulesFileLocation);
+			} catch { }
+
+			using (var datStream = new HttpClient().GetStreamAsync("https://publicsuffix.org/list/effective_tld_names.dat").Result)
+			using (var datFile = new FileStream(Settings.Default.SuffixRulesFileLocation, FileMode.Create, FileAccess.Write)) {
+				datStream.CopyTo(datFile);
+			}
+
+		}
     }
 }

@@ -24,6 +24,10 @@ namespace DomainParser.Library
         private static int _rulesExpireDays = -1;
         private static string _rulesUrl;
 
+        /// <summary>
+        /// Using this property/setting a cache file will be created at this location.
+        /// When the property consists of only a filename, it is combined with the current working directory.
+        /// </summary>
         public static string RulesFileLocation {
             get {
                 if (_rulesFileLocation == null) {
@@ -36,6 +40,11 @@ namespace DomainParser.Library
                 Reset();
             }
         }
+        /// <summary>
+        /// Defines an expiration period in days before the rules are reloaded.
+        /// If a cache file is used, then the file is also renewed.
+        /// To disable expiration, set the expiration period to zero (0).
+        /// </summary>
         public static int RulesExpireDays {
             get {
                 if (_rulesExpireDays == -1) {
@@ -256,7 +265,7 @@ namespace DomainParser.Library
             }
         }
 
-		private void GetAndSaveRulesData() {
+        private void GetAndSaveRulesData() {
 
             string fileLocation = RulesFileLocation;
             if (string.IsNullOrEmpty(Path.GetDirectoryName(fileLocation))) {
@@ -266,17 +275,17 @@ namespace DomainParser.Library
 
             }
 
-			try {
-				File.Delete(fileLocation);
-			} catch { }
+            try {
+                File.Delete(fileLocation);
+            } catch { }
 
             using (var datStream = new HttpClient().GetStreamAsync(RulesUrl).Result)
-			using (var datFile = new FileStream(fileLocation, FileMode.Create, FileAccess.Write)) {
-				datStream.CopyTo(datFile);
-			}
+            using (var datFile = new FileStream(fileLocation, FileMode.Create, FileAccess.Write)) {
+                datStream.CopyTo(datFile);
+            }
 
             Debug.WriteLine(string.Format("Cache file successfully saved to {0}.", fileLocation));
 
-		}
+        }
     }
 }

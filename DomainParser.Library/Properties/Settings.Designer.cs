@@ -25,7 +25,16 @@ namespace DomainParser.Library.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\temp\\publicsuffix.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int SuffixRulesExpireDays {
+            get {
+                return ((int)(this["SuffixRulesExpireDays"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("publicsuffix.txt")]
         public string SuffixRulesFileLocation {
             get {
                 return ((string)(this["SuffixRulesFileLocation"]));
@@ -34,10 +43,10 @@ namespace DomainParser.Library.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int SuffixRulesFileExpireDays {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://publicsuffix.org/list/effective_tld_names.dat")]
+        public string SuffixRulesUrl {
             get {
-                return ((int)(this["SuffixRulesFileExpireDays"]));
+                return ((string)(this["SuffixRulesUrl"]));
             }
         }
     }

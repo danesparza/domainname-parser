@@ -16,12 +16,58 @@ namespace DomainParser.Library
         private static object _syncList = new object();
 		private static object _syncData = new object();
 
-        private IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> _lstTLDRules;
+
+        /// <summary>
+        /// Added the settings as static properties to be set or overridden by the application at runtime
+        /// </summary>
+        private static string _rulesFileLocation;
+        private static int _rulesExpireDays = -1;
+        private static string _rulesUrl;
+
+        public static string RulesFileLocation {
+            get {
+                if (_rulesFileLocation == null) {
+                    _rulesFileLocation = Settings.Default.SuffixRulesFileLocation;
+                }
+                return _rulesFileLocation;
+            }
+            set {
+                _rulesFileLocation = value;
+                Reset();
+            }
+        }
+        public static int RulesExpireDays {
+            get {
+                if (_rulesExpireDays == -1) {
+                    _rulesExpireDays = Settings.Default.SuffixRulesExpireDays;
+                }
+                return _rulesExpireDays;
+            }
+            set {
+                _rulesExpireDays = value;
+                Reset();
+            }
+        }
+        public static string RulesUrl {
+            get {
+                if (_rulesUrl == null) {
+                    _rulesUrl = Settings.Default.SuffixRulesUrl;
+                }
+                return _rulesUrl;
+            }
+            set {
+                _rulesUrl = value;
+            }
+        }
+
+
+        private IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> _lstTLDRules = null;
+		private DateTime? _expires = null;
 
         private TLDRulesCache()
         {
             //  Initialize our internal list:
-            _lstTLDRules = GetTLDRules();
+            // moved to the CheckRuleList method  GetTLDRules();
         }
 
         /// <summary>
@@ -39,7 +85,19 @@ namespace DomainParser.Library
                             _uniqueInstance = new TLDRulesCache();
                     }
                 }
+
+                _uniqueInstance.CheckRuleList();
+
                 return (_uniqueInstance);
+            }
+        }
+
+        /// <summary>
+        /// Checks the availability and/or expiration of the rulelist
+        /// </summary>
+        public void CheckRuleList() {
+            if (_lstTLDRules == null || (RulesExpireDays > 0 && (_expires == null || _expires < DateTime.Now))) {
+                _lstTLDRules = GetTLDRules();
             }
         }
 
@@ -96,54 +154,100 @@ namespace DomainParser.Library
 
             //  Return our results:
             Debug.WriteLine(string.Format("Loaded {0} rules into cache.", results.Values.Sum(r => r.Values.Count)));
+
             return results;
         }
 
         private IEnumerable<string> ReadRulesData()
         {
-            if (!string.IsNullOrEmpty(Settings.Default.SuffixRulesFileLocation)) {
+            // Allow for non cachable rules
+            if (!string.IsNullOrEmpty(RulesFileLocation)) {
 
-				if (File.Exists(Settings.Default.SuffixRulesFileLocation)) {
+                Debug.WriteLine(string.Format("CurrentDirectory is {0}.", Environment.CurrentDirectory));
 
-					DateTime expireDate = File.GetLastWriteTime(Settings.Default.SuffixRulesFileLocation).AddDays(Settings.Default.SuffixRulesFileExpireDays);
-					if (expireDate < DateTime.Now) {
+                DateTime? expireDate = null;
+                string fileLocation = RulesFileLocation;
 
-						lock (_syncData) {
+                if (string.IsNullOrEmpty(Path.GetDirectoryName(fileLocation))) {
 
-							// We have to check again. The file might have been rotated by another process.
-							expireDate = File.GetLastWriteTime(Settings.Default.SuffixRulesFileLocation).AddDays(Settings.Default.SuffixRulesFileExpireDays);
-							if (expireDate < DateTime.Now) {
+                    // Filename without directory. Use the current directory.
+                    fileLocation = Path.Combine(Environment.CurrentDirectory, fileLocation);
 
-								GetAndSaveRulesData();
+                }
 
-							}
+                Debug.WriteLine(string.Format("Cache file location is {0}.", fileLocation));
 
-						}
+                if (File.Exists(fileLocation)) {
 
-					}
+                    Debug.WriteLine("Cache file exists.");
 
-				} else {
+                    // Allow for non expiring rules
+                    if (RulesExpireDays > 0) {
 
-					lock (_syncData) {
+                        expireDate = File.GetLastWriteTime(fileLocation).AddDays(RulesExpireDays);
 
-						if (!File.Exists(Settings.Default.SuffixRulesFileLocation)) {
+                        Debug.WriteLine(string.Format("Cache file expires on {0}. Its's now {1}.", expireDate, DateTime.Now));
 
-							GetAndSaveRulesData();
+                        if (expireDate < DateTime.Now) {
 
-						}
+                            lock (_syncData) {
 
-					}
+                                // We have to check again. The file might have been rotated by another process.
+                                expireDate = File.GetLastWriteTime(fileLocation).AddDays(RulesExpireDays);
+                                if (expireDate < DateTime.Now) {
 
-				}
+                                    GetAndSaveRulesData();
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                } else {
+
+                    Debug.WriteLine("Cache file does not exist (yet).");
+
+                    lock (_syncData) {
+
+                        if (!File.Exists(fileLocation)) {
+
+                            GetAndSaveRulesData();
+
+                        }
+
+                    }
+
+                }
+
+                if (expireDate == null && RulesExpireDays > 0) {
+                    expireDate = File.GetLastWriteTime(fileLocation).AddDays(RulesExpireDays);
+                }
+
+                _expires = expireDate;
+                Debug.WriteLine(string.Format("The rulelist expires on {0}. Its's now {1}.", _expires, DateTime.Now));
 
                 //  Load the rules from the cached text file
-                foreach (var line in File.ReadAllLines(Settings.Default.SuffixRulesFileLocation, Encoding.UTF8))
+                foreach (var line in File.ReadAllLines(fileLocation, Encoding.UTF8))
                     yield return line;
             }
             else
             {
+
+                Debug.WriteLine("Get the rules directly from the web.");
+
+                if (RulesExpireDays > 0) {
+
+                    _expires = DateTime.Now.AddDays(RulesExpireDays);
+
+                    Debug.WriteLine(string.Format("The rulelist expires on {0}. Its's now {1}.", _expires, DateTime.Now));
+
+                }
+
 				// read the files from the web directly.
-				using (var datFile = new HttpClient().GetStreamAsync("https://publicsuffix.org/list/effective_tld_names.dat").Result)
+				using (var datFile = new HttpClient().GetStreamAsync(RulesUrl).Result)
 				using (var reader = new StreamReader(datFile)) {
 					string line;
 					while ((line = reader.ReadLine()) != null)
@@ -154,14 +258,24 @@ namespace DomainParser.Library
 
 		private void GetAndSaveRulesData() {
 
+            string fileLocation = RulesFileLocation;
+            if (string.IsNullOrEmpty(Path.GetDirectoryName(fileLocation))) {
+
+                // Filename without directory. Use the current directory.
+                fileLocation = Path.Combine(Environment.CurrentDirectory, fileLocation);
+
+            }
+
 			try {
-				File.Delete(Settings.Default.SuffixRulesFileLocation);
+				File.Delete(fileLocation);
 			} catch { }
 
-			using (var datStream = new HttpClient().GetStreamAsync("https://publicsuffix.org/list/effective_tld_names.dat").Result)
-			using (var datFile = new FileStream(Settings.Default.SuffixRulesFileLocation, FileMode.Create, FileAccess.Write)) {
+            using (var datStream = new HttpClient().GetStreamAsync(RulesUrl).Result)
+			using (var datFile = new FileStream(fileLocation, FileMode.Create, FileAccess.Write)) {
 				datStream.CopyTo(datFile);
 			}
+
+            Debug.WriteLine(string.Format("Cache file successfully saved to {0}.", fileLocation));
 
 		}
     }

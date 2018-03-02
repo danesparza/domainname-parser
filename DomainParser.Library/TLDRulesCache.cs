@@ -14,7 +14,7 @@ namespace DomainParser.Library
         private static volatile TLDRulesCache _uniqueInstance;
         private static object _syncObj = new object();
         private static object _syncList = new object();
-		private static object _syncData = new object();
+        private static object _syncData = new object();
 
 
         /// <summary>
@@ -95,8 +95,6 @@ namespace DomainParser.Library
                     }
                 }
 
-                _uniqueInstance.CheckRuleList();
-
                 return (_uniqueInstance);
             }
         }
@@ -117,12 +115,26 @@ namespace DomainParser.Library
         {
             get
             {
+                if (_lstTLDRules == null) {
+                    _lstTLDRules = GetTLDRules();
+                }
                 return _lstTLDRules;
             }
             set
             {
                 _lstTLDRules = value;
             }
+        }
+
+        /// <summary>
+        /// Preferable method to get the TLDRuleList. This method checks the availability and/or expiration of the rule list.
+        /// </summary>
+        /// <returns></returns>
+        public IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> GetTLDRuleLists() {
+ 
+            CheckRuleList();
+            return _lstTLDRules;
+
         }
 
         /// <summary>

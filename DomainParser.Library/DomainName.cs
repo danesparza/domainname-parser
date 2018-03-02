@@ -257,11 +257,13 @@ namespace DomainParser.Library
                     checkAgainst = checkAgainst.Substring(0, checkAgainst.Length - 1);
 
                 var rules = Enum.GetValues(typeof(TLDRule.RuleType)).Cast<TLDRule.RuleType>();
+                var ruleList = TLDRulesCache.Instance.GetTLDRuleList();
+
                 foreach (var rule in rules)
                 {
                     //  Try to match rule:
                     TLDRule result;
-                    if (TLDRulesCache.Instance.TLDRuleLists[rule].TryGetValue(checkAgainst, out result))
+                    if (ruleList[rule].TryGetValue(checkAgainst, out result))
                     {
                         ruleMatches.Add(result);
                     }

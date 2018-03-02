@@ -257,7 +257,7 @@ namespace DomainParser.Library
                     checkAgainst = checkAgainst.Substring(0, checkAgainst.Length - 1);
 
                 var rules = Enum.GetValues(typeof(TLDRule.RuleType)).Cast<TLDRule.RuleType>();
-                var ruleList = TLDRulesCache.Instance.GetTLDRuleLists();
+                var ruleList = TLDRulesCache.Instance.GetTLDRuleList();
 
                 foreach (var rule in rules)
                 {

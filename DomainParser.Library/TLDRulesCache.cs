@@ -130,7 +130,7 @@ namespace DomainParser.Library
         /// Preferable method to get the TLDRuleList. This method checks the availability and/or expiration of the rule list.
         /// </summary>
         /// <returns></returns>
-        public IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> GetTLDRuleLists() {
+        public IDictionary<TLDRule.RuleType, IDictionary<string, TLDRule>> GetTLDRuleList() {
  
             CheckRuleList();
             return _lstTLDRules;

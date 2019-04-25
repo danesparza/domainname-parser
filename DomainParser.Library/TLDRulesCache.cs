@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using DomainParser.Library.Properties;
 using System.Diagnostics;
 using System.Net.Http;
 
@@ -11,6 +10,10 @@ namespace DomainParser.Library
 {
     public sealed class TLDRulesCache
     {
+        private const int DefaultSuffixRulesExpireDays = 1;
+        private const string DefaultSuffixRulesFileLocation = "publicsuffix.txt";
+        private const string DefaultSuffixRulesUrl = "https://publicsuffix.org/list/effective_tld_names.dat";
+
         private static volatile TLDRulesCache _uniqueInstance;
         private static object _syncObj = new object();
         private static object _syncList = new object();
@@ -30,8 +33,9 @@ namespace DomainParser.Library
         /// </summary>
         public static string RulesFileLocation {
             get {
-                if (_rulesFileLocation == null) {
-                    _rulesFileLocation = Settings.Default.SuffixRulesFileLocation;
+                if (_rulesFileLocation == null)
+                {
+                    _rulesFileLocation = DefaultSuffixRulesFileLocation;
                 }
                 return _rulesFileLocation;
             }
@@ -47,8 +51,9 @@ namespace DomainParser.Library
         /// </summary>
         public static int RulesExpireDays {
             get {
-                if (_rulesExpireDays == -1) {
-                    _rulesExpireDays = Settings.Default.SuffixRulesExpireDays;
+                if (_rulesExpireDays == -1)
+                {
+                    _rulesExpireDays = DefaultSuffixRulesExpireDays;
                 }
                 return _rulesExpireDays;
             }
@@ -57,10 +62,12 @@ namespace DomainParser.Library
                 Reset();
             }
         }
+
         public static string RulesUrl {
             get {
-                if (_rulesUrl == null) {
-                    _rulesUrl = Settings.Default.SuffixRulesUrl;
+                if (_rulesUrl == null)
+                {
+                    _rulesUrl = DefaultSuffixRulesUrl;
                 }
                 return _rulesUrl;
             }
@@ -159,7 +166,7 @@ namespace DomainParser.Library
             var rules = Enum.GetValues(typeof(TLDRule.RuleType)).Cast<TLDRule.RuleType>();
             foreach (var rule in rules)
             {
-                results[rule] = new Dictionary<string, TLDRule>(StringComparer.InvariantCultureIgnoreCase);
+                results[rule] = new Dictionary<string, TLDRule>(StringComparer.OrdinalIgnoreCase);
             }
 
             var ruleStrings = ReadRulesData();           
@@ -167,7 +174,7 @@ namespace DomainParser.Library
             //  Strip out any lines that are:
             //  a.) A comment
             //  b.) Blank
-            foreach (var ruleString in ruleStrings.Where(ruleString => !ruleString.StartsWith("//", StringComparison.InvariantCultureIgnoreCase) && ruleString.Trim().Length != 0))
+            foreach (var ruleString in ruleStrings.Where(ruleString => !ruleString.StartsWith("//") && ruleString.Trim().Length != 0))
             {
                 var result = new TLDRule(ruleString);
                 results[result.Type][result.Name] = result;
@@ -184,7 +191,7 @@ namespace DomainParser.Library
             // Allow for non cachable rules
             if (!string.IsNullOrEmpty(RulesFileLocation)) {
 
-                Debug.WriteLine(string.Format("CurrentDirectory is {0}.", Environment.CurrentDirectory));
+                Debug.WriteLine(string.Format("CurrentDirectory is {0}.", Directory.GetCurrentDirectory()));
 
                 DateTime? expireDate = null;
                 string fileLocation = RulesFileLocation;
@@ -192,7 +199,7 @@ namespace DomainParser.Library
                 if (string.IsNullOrEmpty(Path.GetDirectoryName(fileLocation))) {
 
                     // Filename without directory. Use the current directory.
-                    fileLocation = Path.Combine(Environment.CurrentDirectory, fileLocation);
+                    fileLocation = Path.Combine(Directory.GetCurrentDirectory(), fileLocation);
 
                 }
 
@@ -283,7 +290,7 @@ namespace DomainParser.Library
             if (string.IsNullOrEmpty(Path.GetDirectoryName(fileLocation))) {
 
                 // Filename without directory. Use the current directory.
-                fileLocation = Path.Combine(Environment.CurrentDirectory, fileLocation);
+                fileLocation = Path.Combine(Directory.GetCurrentDirectory(), fileLocation);
 
             }
 

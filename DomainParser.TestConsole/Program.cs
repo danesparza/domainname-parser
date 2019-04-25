@@ -10,7 +10,7 @@ namespace DomainParser.TestConsole {
 
             TLDRulesCache.RulesFileLocation = @"d:\" + Path.GetFileName(TLDRulesCache.RulesFileLocation);
 
-            Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             DomainTests tests = new DomainTests();
 
             Debug.WriteLine("-------- ParseNormalDomain");

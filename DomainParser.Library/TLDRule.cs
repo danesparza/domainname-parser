@@ -33,12 +33,12 @@ namespace DomainParser.Library
         public TLDRule(string RuleInfo)
         {
             //  Parse the rule and set properties accordingly:
-            if (RuleInfo.StartsWith("*", StringComparison.InvariantCultureIgnoreCase))
+            if (RuleInfo.StartsWith("*"))
             {
                 this.Type = RuleType.Wildcard;
                 this.Name = RuleInfo.Substring(2);
             }
-            else if (RuleInfo.StartsWith("!", StringComparison.InvariantCultureIgnoreCase))
+            else if (RuleInfo.StartsWith("!"))
             {
                 this.Type = RuleType.Exception;
                 this.Name = RuleInfo.Substring(1);

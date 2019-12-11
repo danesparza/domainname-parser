@@ -8,6 +8,7 @@ namespace DomainParser.TestConsole {
     class Program {
         static void Main(string[] args) {
 
+            //What the hell is d: ????  :) :D (*_*)
             TLDRulesCache.RulesFileLocation = @"d:\" + Path.GetFileName(TLDRulesCache.RulesFileLocation);
 
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
